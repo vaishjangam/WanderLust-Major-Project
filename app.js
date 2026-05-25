@@ -44,17 +44,13 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
 
 const store = MongoStore.create({
-    mongoUrl: dbUrl,
-    crypto: {
-        secret: process.env.SECRET,
-    },
+    mongoUrl: process.env.ATLASDB_URL,
     touchAfter: 24 * 3600,
-    ttl: 7 * 24 * 60 * 60,
-    autoRemove: 'interval',
-    autoRemoveInterval: 10,
 });
 
-store.on("error", () => {});
+store.on("error", (err) => {
+    console.log("SESSION STORE ERROR:", err);
+});
 
 const sessionOptions = {
      store,
