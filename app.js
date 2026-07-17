@@ -64,9 +64,6 @@ const sessionOptions = {
     },
 };
 
-// app.get("/", (req, res) =>{
-//     res.send("Hi, I am root!");
-// }); 
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -85,17 +82,9 @@ passport.serializeUser(User.serializeUser());// use static serialize and deseria
 passport.deserializeUser(User.deserializeUser());
 
 
-
-// mDemo user
-// app.get("/demoUser", async(req, res) =>{
-//     let fakeUser = new User({
-//         email: "Student@gmail.com",
-//         username: "Sigma-Student2",
-//     });
-
-//     let registerUser = await User.register(fakeUser, "helloworld");
-//     res.send(registerUser);
-// });
+app.get("/", (req, res) =>{
+    res.redirect("/listings");
+}); 
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
@@ -106,7 +95,7 @@ app.use((req, res, next) =>{
     next(new ExpressError(404, "Page Not found!"));
 }); 
 
-// Replace your current error handler in app.js with this:
+
 app.use((err, req, res, next) => {
     if (res.headersSent) {
         return next(err);
