@@ -2,7 +2,7 @@
 
 > A full-stack web application that allows users to discover, create, and review travel properties with secure authentication, image uploads, and responsive UI.
 
-🔗 **Live Demo:** https://wanderlust-z6i8.onrender.com/
+🔗 **Live Demo:** https://wanderlust-z6i8.onrender.com/listings
 
 ---
 
