@@ -70,6 +70,13 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.get("/whoami", (req, res) => {
+    res.json({
+        loggedIn: req.isAuthenticated(),
+        user: req.user ? req.user.username : null,
+        sid: req.sessionID,
+    });
+});
 app.use((req, res, next) =>{
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
