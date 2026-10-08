@@ -43,6 +43,8 @@ app.use(express.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
 
+app.set("trust proxy", 1);
+
 const store = MongoStore.create({
     mongoUrl: process.env.ATLASDB_URL,
     touchAfter: 24 * 3600,
@@ -58,9 +60,10 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: false, 
     cookie: {
-        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
     },
 };
 
@@ -70,13 +73,7 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.get("/whoami", (req, res) => {
-    res.json({
-        loggedIn: req.isAuthenticated(),
-        user: req.user ? req.user.username : null,
-        sid: req.sessionID,
-    });
-});
+
 app.use((req, res, next) =>{
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
